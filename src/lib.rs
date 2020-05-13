@@ -1,5 +1,19 @@
+pub mod client;
 pub mod indexes;
 
-pub fn hello() {
-    println!("Hello, MeiliSearch mate");
+#[derive(Debug)]
+pub struct Config {
+    pub host: String,
+    pub port: usize,
 }
+
+impl Config {
+    pub fn new(host: String, port: usize) -> Self {
+        Config {
+            host,
+            port
+        }
+    }
+}
+
+
