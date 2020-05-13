@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 //use serde_json::{Value};
 use std::str;
 use crate::Config;
+use crate::rest_helper;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Index {
@@ -35,23 +36,21 @@ fn to_url(config: &Config, uid: String) -> String {
     host + ":" + port.to_string().as_str() + INDEXES + "/" + uid.as_str()
 }
 
-// Get information about an index.
+// Get Index
 pub async fn get_index(config: &Config, uid: String) -> Result<Index, &'static str> {
     let url = to_url(config, uid); 
-    let client = Client::default();
-    let response = client.get(url).header("Content-Type", "application/json").send().await;
-    match response {
-        Ok(mut res) => {
-            match res.json::<Index>().await {
-                Ok(index) => Ok(index),
-                Err(_err)  => { Err("Data currupt") }
+    let res = rest_helper::get(url).await;
+    match res {
+        Ok(value) => {
+            let index: Result<Index, serde_json::error::Error> = serde_json::from_value(value) as Result<Index, serde_json::error::Error>;
+            match index {
+                Ok(data) => Ok(data),
+                Err(_err) => {
+                    Err("Debug")
+                }
             }
         },
-        Err(_err) => {
-            // let err_str = "API - get_index: ".to_string() + format!("{:?}", err).as_str();
-            // Err(err_str.as_str())
-            Err("tmp get_index")
-        }
+        Err(_err) => Err("value erro")
     }
 }
 
