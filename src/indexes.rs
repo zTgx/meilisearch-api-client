@@ -47,7 +47,7 @@ pub async fn get_index(config: &Config, uid: String) -> Result<Index, &'static s
                 Err(_err)  => { Err("Data currupt") }
             }
         },
-        Err(err) => {
+        Err(_err) => {
             // let err_str = "API - get_index: ".to_string() + format!("{:?}", err).as_str();
             // Err(err_str.as_str())
             Err("tmp get_index")
