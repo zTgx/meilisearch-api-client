@@ -6,6 +6,7 @@ repository = "https://github.com/zTgx/meilib.git"
 readme = "README.md"
 description = "meilib is a client for MeiliSearch."
 edition = "2018"
+license = "MIT"
 
 [dependencies]
 actix-web = "2"
