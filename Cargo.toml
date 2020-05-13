@@ -1,0 +1,18 @@
+[package]
+name = "meilib"
+version = "0.1.0"
+authors = ["beautifularea"]
+repository = "https://github.com/zTgx/meilib.git"
+readme = "README.md"
+description = "meilib is a client for MeiliSearch."
+edition = "2018"
+
+[dependencies]
+actix-web = "2"
+actix-rt = "1"
+serde = "1.0.105"
+serde_derive = "1.0.105"
+serde_json = "1.0.50"
+
+
+
