@@ -1,12 +1,13 @@
 [package]
 name = "meilib"
 version = "0.1.0"
+edition = "2018"
 authors = ["beautifularea"]
 repository = "https://github.com/zTgx/meilib.git"
 readme = "README.md"
 description = "meilib is a client for MeiliSearch."
-edition = "2018"
 license = "MIT"
+keywords = ["MeiliSearch", "Typo-Tolerant Search"]
 
 [dependencies]
 actix-web = "2"
