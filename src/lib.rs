@@ -53,3 +53,18 @@ impl Indexes {
     }
 }
 
+#[derive(Serialize, Deserialize, Debug)]
+pub struct CreateIndexRequest {
+    pub uid: String,
+    
+    #[serde(rename="primaryKey")]
+    pub primary_key: Option<String>
+}
+impl CreateIndexRequest {
+    pub fn new(uid: String, primary_key: Option<String>) -> Self {
+        CreateIndexRequest {
+            uid,
+            primary_key
+        }
+    }
+}
