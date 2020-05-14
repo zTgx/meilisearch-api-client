@@ -7,6 +7,7 @@ use crate::{
 
     CreateIndexRequest,
     UpdateIndexRequest,
+    DeleteIndexRequest,
 };
 
 pub struct Client {
@@ -38,5 +39,9 @@ impl Client {
 
     pub async fn update_index(&self, update_index_req: UpdateIndexRequest) -> Result<Index, ServiceError> {
         indexes::update_index(&self.config, update_index_req).await
+    }
+
+    pub async fn delete_index(&self, delete_index_req: DeleteIndexRequest) -> Result<String, ServiceError> {
+        indexes::delete_index(&self.config, delete_index_req).await
     }
 }

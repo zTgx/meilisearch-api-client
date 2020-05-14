@@ -111,3 +111,16 @@ impl UpdateIndexRequest {
         }
     }
 }
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct DeleteIndexRequest {
+    pub uid: String,
+}
+
+impl DeleteIndexRequest {
+    pub fn new(uid: String) -> Self {
+        DeleteIndexRequest {
+            uid
+        }
+    }
+}

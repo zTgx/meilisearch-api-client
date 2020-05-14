@@ -9,6 +9,7 @@ use crate::{
     
     CreateIndexRequest,
     UpdateIndexRequest,
+    DeleteIndexRequest,
 };
 
 // Get All Indexes
@@ -74,6 +75,26 @@ pub async fn update_index(config: &Config, update_index_req: UpdateIndexRequest)
     match res {
         Ok(value) => {
             let index: Result<Index, serde_json::error::Error> = serde_json::from_value(value) as Result<Index, serde_json::error::Error>;
+            match index {
+                Ok(data) => Ok(data),
+                Err(err) => Err(ServiceError::new(StatusCode::INTERNAL_SERVER_ERROR, err.to_string()))
+            }
+        },
+        Err(err) => Err(err)
+    }
+}
+
+// Delete Index
+pub async fn delete_index(config: &Config, delete_index_req: DeleteIndexRequest) -> Result<String, ServiceError> {
+    let host_and_port = config.get_url();
+    let url = host_and_port + constants::INDEXES + "/" + delete_index_req.uid.as_str();
+
+    let res = rest_helper::delete(url, None).await;
+    println!("res: {:?}", res);
+    match res {
+        Ok(value) => {
+            println!("value; {:?}", value);
+            let index: Result<String, serde_json::error::Error> = serde_json::from_value(value) as Result<String, serde_json::error::Error>;
             match index {
                 Ok(data) => Ok(data),
                 Err(err) => Err(ServiceError::new(StatusCode::INTERNAL_SERVER_ERROR, err.to_string()))
