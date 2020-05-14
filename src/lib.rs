@@ -1,8 +1,8 @@
-pub mod client;
 mod indexes;
 mod rest_helper;
 mod error;
 mod constants;
+pub mod client;
 
 use serde::{Deserialize, Serialize};
 use serde::ser::{Serializer, SerializeStruct};
@@ -84,10 +84,6 @@ impl Serialize for CreateIndexRequest {
         if self.primary_key.is_some () {
             state.serialize_field("primaryKey", &self.primary_key)?;
         } 
-
-        // else {
-        //     state.serialize_field("primaryKey", "")?;
-        // } 
 
         state.end()
     }
