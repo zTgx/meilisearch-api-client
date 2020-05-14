@@ -8,6 +8,7 @@ use crate::{
     Indexes,
     
     CreateIndexRequest,
+    UpdateIndexRequest,
 };
 
 // Get All Indexes
@@ -51,6 +52,26 @@ pub async fn create_index(config: &Config, create_index_req: CreateIndexRequest)
 
     let body = serde_json::to_string(&create_index_req).unwrap();
     let res = rest_helper::post(url, body).await;
+    match res {
+        Ok(value) => {
+            let index: Result<Index, serde_json::error::Error> = serde_json::from_value(value) as Result<Index, serde_json::error::Error>;
+            match index {
+                Ok(data) => Ok(data),
+                Err(err) => Err(ServiceError::new(StatusCode::INTERNAL_SERVER_ERROR, err.to_string()))
+            }
+        },
+        Err(err) => Err(err)
+    }
+}
+
+// Update Index
+pub async fn update_index(config: &Config, update_index_req: UpdateIndexRequest) -> Result<Index, ServiceError> {
+    let host_and_port = config.get_url();
+    let url = host_and_port + constants::INDEXES + "/" + update_index_req.uid.as_str();
+
+    let body = serde_json::to_string(&update_index_req).unwrap();
+    let res = rest_helper::put(url, body).await;
+    println!("update : {:?}", res);
     match res {
         Ok(value) => {
             let index: Result<Index, serde_json::error::Error> = serde_json::from_value(value) as Result<Index, serde_json::error::Error>;

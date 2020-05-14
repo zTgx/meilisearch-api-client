@@ -29,8 +29,8 @@ impl Config {
 // Index
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Index {
-    pub name: String,
     pub uid : String,
+    pub name: String,
 
     #[serde(rename="createdAt")]
     pub created_at: String,
@@ -83,10 +83,31 @@ impl Serialize for CreateIndexRequest {
 
         if self.primary_key.is_some () {
             state.serialize_field("primaryKey", &self.primary_key)?;
-        } else {
-            state.serialize_field("primaryKey", "")?;
         } 
 
+        // else {
+        //     state.serialize_field("primaryKey", "")?;
+        // } 
+
         state.end()
+    }
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct UpdateIndexRequest {
+    pub uid: String,
+    pub name: String,
+
+    #[serde(rename="primaryKey")]
+    pub primary_key: String,
+}
+
+impl UpdateIndexRequest {
+    pub fn new(uid: String, name: String, primary_key: String) -> Self {
+        UpdateIndexRequest {
+            uid,
+            name,
+            primary_key
+        }
     }
 }

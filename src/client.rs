@@ -6,6 +6,7 @@ use crate::{
     Indexes,
 
     CreateIndexRequest,
+    UpdateIndexRequest,
 };
 
 pub struct Client {
@@ -33,5 +34,9 @@ impl Client {
     
     pub async fn create_index(&self, create_index_req: CreateIndexRequest) -> Result<Index, ServiceError> {
         indexes::create_index(&self.config, create_index_req).await
+    }
+
+    pub async fn update_index(&self, update_index_req: UpdateIndexRequest) -> Result<Index, ServiceError> {
+        indexes::update_index(&self.config, update_index_req).await
     }
 }
