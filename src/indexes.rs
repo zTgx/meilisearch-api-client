@@ -33,17 +33,10 @@ impl Indexes {
 // Indexes route
 static INDEXES: &'static str = "/indexes";
 
-// Util concat URL
-fn to_url(config: &Config, uid: String) -> String {
-    let host = config.host.to_owned();
-    let port = config.port;
-
-    host + ":" + port.to_string().as_str() + INDEXES + "/" + uid.as_str()
-}
-
 // Get Index
-pub async fn get_index(config: &Config, uid: String) -> Result<Index, &'static str> {
-    let url = to_url(config, uid); 
+pub async fn get_index(config: &Config, uid: &'static str) -> Result<Index, &'static str> {
+    let host_and_port = config.get_url();
+    let url = host_and_port + INDEXES + "/" + uid;
     let res = rest_helper::get(url).await;
     match res {
         Ok(value) => {

@@ -1,6 +1,7 @@
 pub mod client;
 mod indexes;
 mod rest_helper;
+mod error;
 
 #[derive(Debug)]
 pub struct Config {
