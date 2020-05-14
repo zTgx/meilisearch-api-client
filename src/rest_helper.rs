@@ -31,29 +31,21 @@ pub async fn get(url: String) -> Result<Value, ServiceError> {
     }
 }
 
-pub struct Web {
-}
-impl Web {
-}
+pub async fn post(url: String, body: String) -> Result<Value, ServiceError> {
+    let client = Client::default();
+    let request = client.post(url);
 
-impl Web {
-    pub async fn post(url: String, body: String) -> Result<Value, ServiceError> {
-        let client = Client::default();
-        let request = client.post(url);
+    // Set Headers
+    let request = request.set_header("Content-Type", "application/json");
 
-        // Set Headers
-        let request = request.set_header("Content-Type", "application/json");
-        println!("body: {:?}", body); 
-        let response = request.send_body( Body::from_slice(body.as_bytes()) ).await;
-        println!("resonse: {:?}", response);
-        match response {
-            Ok(mut res) => {
-                match res.json::<Value>().await {
-                    Ok(value) => Ok(value),
-                    Err(err)  => Err(ServiceError::new(StatusCode::INTERNAL_SERVER_ERROR, err.to_string()))
-                }
-            },
-            Err(err) => Err(ServiceError::new(StatusCode::INTERNAL_SERVER_ERROR, err.to_string()))
-        }
+    let response = request.send_body( Body::from_slice(body.as_bytes()) ).await;
+    match response {
+        Ok(mut res) => {
+            match res.json::<Value>().await {
+                Ok(value) => Ok(value),
+                Err(err)  => Err(ServiceError::new(StatusCode::INTERNAL_SERVER_ERROR, err.to_string()))
+            }
+        },
+        Err(err) => Err(ServiceError::new(StatusCode::INTERNAL_SERVER_ERROR, err.to_string()))
     }
 }

@@ -50,7 +50,7 @@ pub async fn create_index(config: &Config, create_index_req: CreateIndexRequest)
     let url = host_and_port + constants::INDEXES;
 
     let body = serde_json::to_string(&create_index_req).unwrap();
-    let res = rest_helper::Web::post(url, body).await;
+    let res = rest_helper::post(url, body).await;
     match res {
         Ok(value) => {
             let index: Result<Index, serde_json::error::Error> = serde_json::from_value(value) as Result<Index, serde_json::error::Error>;
