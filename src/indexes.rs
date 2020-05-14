@@ -1,36 +1,9 @@
-use serde::{Deserialize, Serialize};
 use crate::constants;
 use crate::Config;
 use crate::rest_helper;
 use crate::error;
 use actix_web::http::StatusCode;
-
-#[derive(Serialize, Deserialize, Debug)]
-pub struct Index {
-    pub name: String,
-    pub uid	: String,
-
-    #[serde(rename="createdAt")]
-    pub created_at: String,
-    
-    #[serde(rename="updatedAt")]
-    pub updated_at: String,
-    
-    #[serde(rename="primaryKey")]
-    pub primary_key: String,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub struct Indexes {
-    pub indexes: Vec<Index>
-}
-impl Indexes {
-    pub fn new(indexes: Vec<Index>) -> Self {
-        Indexes {
-            indexes
-        }
-    }
-}
+use crate::{Index,Indexes};
 
 // Get Index
 pub async fn get_index(config: &Config, uid: &'static str) -> Result<Index, error::ServiceError> {

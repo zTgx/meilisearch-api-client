@@ -4,6 +4,8 @@ mod rest_helper;
 mod error;
 mod constants;
 
+use serde::{Deserialize, Serialize};
+
 #[derive(Debug)]
 pub struct Config {
     pub host: String,
@@ -23,4 +25,31 @@ impl Config {
     }
 }
 
+// Index
+#[derive(Serialize, Deserialize, Debug)]
+pub struct Index {
+    pub name: String,
+    pub uid : String,
+
+    #[serde(rename="createdAt")]
+    pub created_at: String,
+
+    #[serde(rename="updatedAt")]
+    pub updated_at: String,
+
+    #[serde(rename="primaryKey")]
+    pub primary_key: String,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct Indexes {
+    pub indexes: Vec<Index>
+}
+impl Indexes {
+    pub fn new(indexes: Vec<Index>) -> Self {
+        Indexes {
+            indexes
+        }
+    }
+}
 
