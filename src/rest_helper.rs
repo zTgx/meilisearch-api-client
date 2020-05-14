@@ -1,7 +1,14 @@
-use actix_web::client::Client;
 use serde_json::{Value};
+use actix_web::{    
+    http::{
+        StatusCode,
+    },
+    client::Client
+};
+use crate::error;
+use crate::constants;
 
-pub async fn get(url: String) -> Result<Value, &'static str> {
+pub async fn get(url: String) -> Result<Value, error::ServiceError> {
     let client = Client::default();
     let request = client.get(url);
 
@@ -13,13 +20,11 @@ pub async fn get(url: String) -> Result<Value, &'static str> {
         Ok(mut res) => {
             match res.json::<Value>().await {
                 Ok(value) => Ok(value),
-                Err(_err)  => { Err("Data currupt") }
+                Err(err)  => Err(error::ServiceError::new(StatusCode::INTERNAL_SERVER_ERROR, err.to_string())) 
             }
         },
         Err(_err) => {
-            // let err_str = "API - get_index: ".to_string() + format!("{:?}", err).as_str();
-            // Err(err_str.as_str())
-            Err("tmp get_index")
+            Err(error::ServiceError::new(StatusCode::INTERNAL_SERVER_ERROR, constants::MESSAGE_INTERNAL_SERVER_ERROR.to_string()))
         }
     }
 }

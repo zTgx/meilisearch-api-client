@@ -1,8 +1,5 @@
 use serde::{Deserialize, Serialize};
-use actix_web::{
-    HttpResponse,
-    http::StatusCode,
-};
+use actix_web::http::StatusCode;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ResponseBody<T> {
@@ -21,6 +18,7 @@ impl<T> ResponseBody<T> {
     }
 }
 
+#[derive(Debug)]
 pub struct ServiceError {
     pub http_status: StatusCode,
     pub body: ResponseBody<String>,
@@ -36,10 +34,6 @@ impl ServiceError {
                 data: String::new(),
             }
         }
-    }
-
-    pub fn response(&self) -> HttpResponse {
-        HttpResponse::build(self.http_status).json(&self.body)
     }
 }
 

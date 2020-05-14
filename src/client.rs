@@ -1,12 +1,6 @@
 use crate::indexes;
 use crate::Config;
-
-/* // trait not support asybc / await now.
-pub trait IndexesAPI {
-    type Index;
-    async fn get_index(&self, uid: String) -> Result<Self::Index, &'static str>;
-}
-*/
+use crate::error;
 
 pub struct Client {
     pub config: Config,
@@ -23,7 +17,7 @@ impl Client {
 
 // impl [indexes] APIs
 impl Client {
-    pub async fn get_index(&self, uid: &'static str) -> Result<indexes::Index, &'static str> {
+    pub async fn get_index(&self, uid: &'static str) -> Result<indexes::Index, error::ServiceError> {
         indexes::get_index(&self.config, uid).await
     }
 

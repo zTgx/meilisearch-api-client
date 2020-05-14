@@ -2,6 +2,8 @@ use serde::{Deserialize, Serialize};
 use crate::constants;
 use crate::Config;
 use crate::rest_helper;
+use crate::error;
+use actix_web::http::StatusCode;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Index {
@@ -31,7 +33,7 @@ impl Indexes {
 }
 
 // Get Index
-pub async fn get_index(config: &Config, uid: &'static str) -> Result<Index, &'static str> {
+pub async fn get_index(config: &Config, uid: &'static str) -> Result<Index, error::ServiceError> {
     let host_and_port = config.get_url();
     let url = host_and_port + constants::INDEXES + "/" + uid;
     let res = rest_helper::get(url).await;
@@ -40,12 +42,10 @@ pub async fn get_index(config: &Config, uid: &'static str) -> Result<Index, &'st
             let index: Result<Index, serde_json::error::Error> = serde_json::from_value(value) as Result<Index, serde_json::error::Error>;
             match index {
                 Ok(data) => Ok(data),
-                Err(_err) => {
-                    Err("Debug")
-                }
+                Err(err) => Err(error::ServiceError::new(StatusCode::INTERNAL_SERVER_ERROR, err.to_string()))
             }
         },
-        Err(_err) => Err("value erro")
+        Err(err) => Err(err)
     }
 }
 

@@ -8,8 +8,14 @@ async fn main() -> std::io::Result<()> {
     let uid = "movies";
     let config = Config::new("http://127.0.0.1".to_string(), 7700);
     let res = Client::new(config).get_index(uid).await;
-    println!("index: {:?}", res);
-
+    match res {
+        Ok(index) => {
+            println!("index: {:?}", index);
+        },
+        Err(err) => {
+            println!("err: {:?}", err);
+        }
+    }
     Ok(())
 }
 
