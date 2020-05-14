@@ -6,3 +6,11 @@
 [meilib](https://github.com/zTgx/meilib) is a client for [MeiliSearch](https://github.com/meilisearch/MeiliSearch). MeiliSearch is a powerful, fast, open-source, easy to use and deploy search engine. Both searching and indexing are highly customizable. Features such as typo-tolerance, filters, and synonyms are provided out-of-the-box. For more information about features go to [documentation](https://docs.meilisearch.com/).
 
 **[API Documentation](https://docs.meilisearch.com/references/)**
+
+More examples
+---------------
+More examples can be found [in the examples directory](examples/).  
+
+## Changelog
+
+Release notes are available in [CHANGELOG.md](CHANGELOG.md).
