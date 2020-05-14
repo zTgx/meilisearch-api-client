@@ -31,6 +31,7 @@ pub async fn get(url: String) -> Result<Value, ServiceError> {
     }
 }
 
+// Post method
 pub async fn post(url: String, body: String) -> Result<Value, ServiceError> {
     let client = Client::default();
     let request = client.post(url);
