@@ -8,6 +8,7 @@ readme = "README.md"
 description = "meilib is a client for MeiliSearch."
 license = "MIT"
 keywords = ["MeiliSearch", "api-client", "library"]
+categories = [ "api-bindings", "database" ]
 
 [dependencies]
 actix-web = "3.0.0-alpha.2"
