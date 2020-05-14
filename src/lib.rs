@@ -5,6 +5,7 @@ mod error;
 mod constants;
 
 use serde::{Deserialize, Serialize};
+use serde::ser::{Serializer, SerializeStruct};
 
 #[derive(Debug)]
 pub struct Config {
@@ -53,18 +54,39 @@ impl Indexes {
     }
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Deserialize, Debug)]
 pub struct CreateIndexRequest {
     pub uid: String,
-    
+    pub name: String,
+
     #[serde(rename="primaryKey")]
     pub primary_key: Option<String>
 }
 impl CreateIndexRequest {
-    pub fn new(uid: String, primary_key: Option<String>) -> Self {
+    pub fn new(uid: String, name: String, primary_key: Option<String>) -> Self {
         CreateIndexRequest {
             uid,
+            name,
             primary_key
         }
+    }
+}
+impl Serialize for CreateIndexRequest {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        let mut state = serializer.serialize_struct("CreateIndexRequest", 3)?;
+
+        state.serialize_field("uid", &self.uid)?;
+        state.serialize_field("name", &self.name)?;
+
+        if self.primary_key.is_some () {
+            state.serialize_field("primaryKey", &self.primary_key)?;
+        } else {
+            state.serialize_field("primaryKey", "")?;
+        } 
+
+        state.end()
     }
 }

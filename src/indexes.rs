@@ -9,7 +9,6 @@ use crate::{
     
     CreateIndexRequest,
 };
-use crate::rest_helper::Data;
 
 // Get All Indexes
 pub async fn get_indexes(config: &Config) -> Result<Indexes, ServiceError>{
@@ -49,8 +48,9 @@ pub async fn get_index(config: &Config, uid: &'static str) -> Result<Index, Serv
 pub async fn create_index(config: &Config, create_index_req: CreateIndexRequest) -> Result<Index, ServiceError> {
     let host_and_port = config.get_url();
     let url = host_and_port + constants::INDEXES;
-    let res = rest_helper::Web::new(Box::new(Data::new(create_index_req))).post(url).await;
-    println!("res: {:?}", res);
+
+    let body = serde_json::to_string(&create_index_req).unwrap();
+    let res = rest_helper::Web::post(url, body).await;
     match res {
         Ok(value) => {
             let index: Result<Index, serde_json::error::Error> = serde_json::from_value(value) as Result<Index, serde_json::error::Error>;
