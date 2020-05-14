@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use std::str;
+use crate::constants;
 use crate::Config;
 use crate::rest_helper;
 
@@ -30,13 +30,10 @@ impl Indexes {
     }
 }
 
-// Indexes route
-static INDEXES: &'static str = "/indexes";
-
 // Get Index
 pub async fn get_index(config: &Config, uid: &'static str) -> Result<Index, &'static str> {
     let host_and_port = config.get_url();
-    let url = host_and_port + INDEXES + "/" + uid;
+    let url = host_and_port + constants::INDEXES + "/" + uid;
     let res = rest_helper::get(url).await;
     match res {
         Ok(value) => {
@@ -55,7 +52,7 @@ pub async fn get_index(config: &Config, uid: &'static str) -> Result<Index, &'st
 // Get All Indexes
 pub async fn get_indexes(config: &Config) -> Result<Indexes, &'static str>{
     let host_and_port = config.get_url();
-    let url = host_and_port + INDEXES;
+    let url = host_and_port + constants::INDEXES;
     let response = rest_helper::get(url).await;
     match response {
         Ok(value) => {
