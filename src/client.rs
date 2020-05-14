@@ -25,5 +25,9 @@ impl Client {
 impl Client {
     pub async fn get_index(&self, uid: String) -> Result<indexes::Index, &'static str> {
         indexes::get_index(&self.config, uid).await
-    }  
+    }
+
+    pub async fn get_indexes(&self) -> Result<indexes::Indexes, &'static str> {
+        indexes::get_indexes(&self.config).await
+    }
 }

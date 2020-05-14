@@ -1,6 +1,4 @@
-use actix_web::client::Client;
 use serde::{Deserialize, Serialize};
-//use serde_json::{Value};
 use std::str;
 use crate::Config;
 use crate::rest_helper;
@@ -23,6 +21,13 @@ pub struct Index {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Indexes {
     pub indexes: Vec<Index>
+}
+impl Indexes {
+    pub fn new(indexes: Vec<Index>) -> Self {
+        Indexes {
+            indexes
+        }
+    }
 }
 
 // Indexes route
@@ -55,19 +60,17 @@ pub async fn get_index(config: &Config, uid: String) -> Result<Index, &'static s
 }
 
 // Get All Indexes
-pub async fn get_indexes() -> Result<Indexes, &'static str>{
-    let client = Client::default();
-    let response = client
-        .get("http://127.0.0.1:7700/indexes")
-        .header("Content-Type", "application/json")
-        .send().await;       
-
+pub async fn get_indexes(config: &Config) -> Result<Indexes, &'static str>{
+    let host_and_port = config.get_url();
+    let url = host_and_port + INDEXES;
+    let response = rest_helper::get(url).await;
     match response {
-        Ok(mut res) => {
-            let body = res.body().await;
-            let v: Vec<Index> = serde_json::from_str(str::from_utf8(&body.unwrap()).unwrap()).unwrap();
-            
-            Ok( Indexes { indexes: v } )
+        Ok(value) => {
+            let indexes: Result<Vec<Index>, serde_json::error::Error> = serde_json::from_value(value) as Result<Vec<Index>, serde_json::error::Error>;
+            match indexes {
+                Ok(data) => Ok( Indexes::new(data) ),
+                Err(_err) => Err("get_indexes Debug")
+            }
         },
         Err(_err) => {
             Err("Get Response Error")

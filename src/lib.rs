@@ -15,6 +15,10 @@ impl Config {
             port
         }
     }
+
+    pub fn get_url(&self) -> String {
+        self.host.as_str().to_owned() + ":" + self.port.to_string().as_str()
+    }
 }
 
 

@@ -3,7 +3,12 @@ use serde_json::{Value};
 
 pub async fn get(url: String) -> Result<Value, &'static str> {
     let client = Client::default();
-    let response = client.get(url).header("Content-Type", "application/json").send().await;
+    let request = client.get(url);
+
+    // Set Headers
+    let request = request.set_header("Content-Type", "application/json");
+    
+    let response = request.send().await;
     match response {
         Ok(mut res) => {
             match res.json::<Value>().await {
