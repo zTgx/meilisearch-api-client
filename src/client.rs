@@ -1,6 +1,6 @@
 use crate::indexes;
 use crate::Config;
-use crate::error;
+use crate::error::ServiceError;
 use crate::{Index, Indexes};
 
 pub struct Client {
@@ -18,11 +18,11 @@ impl Client {
 
 // impl [indexes] APIs
 impl Client {
-    pub async fn get_index(&self, uid: &'static str) -> Result<Index, error::ServiceError> {
+    pub async fn get_index(&self, uid: &'static str) -> Result<Index, ServiceError> {
         indexes::get_index(&self.config, uid).await
     }
 
-    pub async fn get_indexes(&self) -> Result<Indexes, &'static str> {
+    pub async fn get_indexes(&self) -> Result<Indexes, ServiceError> {
         indexes::get_indexes(&self.config).await
     }
 }
