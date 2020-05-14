@@ -71,7 +71,6 @@ pub async fn update_index(config: &Config, update_index_req: UpdateIndexRequest)
 
     let body = serde_json::to_string(&update_index_req).unwrap();
     let res = rest_helper::put(url, body).await;
-    println!("update : {:?}", res);
     match res {
         Ok(value) => {
             let index: Result<Index, serde_json::error::Error> = serde_json::from_value(value) as Result<Index, serde_json::error::Error>;

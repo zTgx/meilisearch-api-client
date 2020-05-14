@@ -53,7 +53,6 @@ pub async fn post(url: String, body: String) -> Result<Value, ServiceError> {
 
 // Put method
 pub async fn put(url: String, body: String) -> Result<Value, ServiceError> {
-
     let client = Client::default();
     let request = client.put(url);
 
@@ -64,7 +63,7 @@ pub async fn put(url: String, body: String) -> Result<Value, ServiceError> {
     match response {
         Ok(mut res) => {
             match res.json::<Value>().await {
-                Ok(value) => { println!("value: {:?}", value); Ok(value) },
+                Ok(value) => Ok(value),
                 Err(err)  => Err(ServiceError::new(StatusCode::INTERNAL_SERVER_ERROR, err.to_string()))
             }
         },
