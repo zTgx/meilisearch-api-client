@@ -56,6 +56,10 @@ impl Client {
 
 // impl [documents] APIs
 impl Client {
+    pub async fn get_document<T: Document>(&self, uid: String, did: String) -> Result<T, ServiceError> {
+        documents::get_document(&self.config, uid, did).await
+    }
+
     pub async fn add_or_replace<T: Document>(&self, document_req: DocumentRequest<T>) -> Result<DocumentState, ServiceError> {
         documents::add_or_replace(&self.config, document_req).await
     }
