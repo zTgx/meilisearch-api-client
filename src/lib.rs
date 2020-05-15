@@ -58,6 +58,8 @@
 //! 
 
 mod indexes;
+mod documents;
+
 mod rest_helper;
 mod constants;
 
