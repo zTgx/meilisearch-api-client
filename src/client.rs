@@ -1,4 +1,7 @@
-use crate::indexes;
+use crate::{
+    indexes,
+    documents,
+};
 use crate::Config;
 use crate::error::ServiceError;
 use crate::{
@@ -8,6 +11,11 @@ use crate::{
     CreateIndexRequest,
     UpdateIndexRequest,
     DeleteIndexRequest,
+};
+use crate::{
+    Document,
+    DocumentRequest,
+    DocumentState,
 };
 
 pub struct Client {
@@ -43,5 +51,12 @@ impl Client {
 
     pub async fn delete_index(&self, delete_index_req: DeleteIndexRequest) -> Result<String, ServiceError> {
         indexes::delete_index(&self.config, delete_index_req).await
+    }
+}
+
+// impl [documents] APIs
+impl Client {
+    pub async fn add_or_replace<T: Document>(&self, document_req: DocumentRequest<T>) -> Result<DocumentState, ServiceError> {
+        documents::add_or_replace(&self.config, document_req).await
     }
 }

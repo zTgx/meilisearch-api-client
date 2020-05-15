@@ -42,7 +42,8 @@ pub async fn post(url: String, body: String) -> Result<Value, ServiceError> {
     let response = request.send_body( Body::from_slice(body.as_bytes()) ).await;
     match response {
         Ok(mut res) => {
-            match res.json::<Value>().await {
+            let tp = res.body().await;
+            match serde_json::from_slice(&tp.unwrap()) {
                 Ok(value) => Ok(value),
                 Err(err)  => Err(ServiceError::new(StatusCode::INTERNAL_SERVER_ERROR, err.to_string()))
             }

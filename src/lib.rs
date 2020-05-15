@@ -71,6 +71,9 @@ pub mod error;
 
 use serde::{Deserialize, Serialize};
 use serde::ser::{Serializer, SerializeStruct};
+use serde::de::DeserializeOwned;
+use std::fmt::Debug;
+use std::fmt::Display;
 
 /// Including sever's host and port
 #[derive(Debug)]
@@ -190,3 +193,33 @@ impl DeleteIndexRequest {
         }
     }
 }
+
+/// Userdefined Document MUST impl
+pub trait Document: Serialize + DeserializeOwned + std::fmt::Debug {
+    type IDType: Display;
+
+    fn get_id(&self) -> &Self::IDType;
+}
+
+/// Including add documents request params
+#[derive(Serialize, Debug)]
+pub struct DocumentRequest <T: Document> {
+    pub uid: String,                // index id
+    pub documents: Option<Vec<T>>,  // user defined data
+}
+impl <T: Document> DocumentRequest <T> {
+    pub fn new(uid: String, documents: Option<Vec<T>>) -> Self {
+        DocumentRequest {
+            uid,
+            documents
+        }
+    }
+}
+
+/// Including documents related response
+#[derive(Serialize, Deserialize, Debug)]
+pub struct DocumentState {
+    #[serde(rename="updateId")]
+    pub update_id: usize,
+}
+
