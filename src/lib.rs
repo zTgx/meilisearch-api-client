@@ -1,12 +1,76 @@
+// Copyright 2019-2020 zTgx <beautifularea@163.com>.
+//
+// Licensed under the Apache License, Version 2.0 <LICENSE-APACHE or
+// https://www.apache.org/licenses/LICENSE-2.0> or the MIT license
+// <LICENSE-MIT or https://opensource.org/licenses/MIT>, at your
+// option. This file may not be copied, modified, or distributed
+// except according to those terms.
+
+//! A well designed api client for MeiliSearch.
+//!
+//! CAVEAT: WIP
+//!
+//!
+//! # Quick Start
+//!
+//! To get you started quickly, the easiest and highest-level way to create
+//! index is to use [`create_index`]; 
+//!
+//! ```
+//! use meilib::{Config, client::Client, CreateIndexRequest};
+//!
+//! #[actix_rt::main]
+//! async fn main() -> std::io::Result<()> {
+//!    let uid  = "demo".to_string();
+//!    let name = "demoname".to_string();
+//!
+//!    // construct a request param
+//!    let req_data = CreateIndexRequest { uid, name, primary_key: None};
+//!
+//!    // config contains MeiliSearch server's host and port
+//!    let config = Config::new("http://127.0.0.1".to_string(), 7700);
+//!
+//!    // Client is api interface, using async/await.
+//!    let res = Client::new(config).create_index(req_data).await;
+//!    match res {
+//!        Ok(index) => {
+//!            println!("ceate index: {:?}", index);
+//!        },
+//!        Err(err) => {
+//!            println!("err: {:?}", err);
+//!        }
+//!     }
+//!     
+//!     Ok(())
+//! }
+//!
+//! ```
+//! Output:
+//! ```
+//! {"name":"demoname","uid":"demo","createdAt":"2020-05-14T08:56:24.483670375Z","updatedAt":"2020-05-14T08:56:24.484410846Z","primaryKey":null}
+//! ```
+//!
+//! # Installation
+//! 
+//! This crate requires a MeiliSearch server to run. See [here](https://docs.meilisearch.com/guides/advanced_guides/installation.html#download-and-launch) to install and run MeiliSearch.  
+//! For the user guide and further documentation, can be found
+//! [here](https://docs.meilisearch.com/)
+//! 
+
 mod indexes;
 mod rest_helper;
-mod error;
 mod constants;
+
+/// Module containing all the api interfaces
 pub mod client;
+
+/// Module containing ServiceError
+pub mod error;
 
 use serde::{Deserialize, Serialize};
 use serde::ser::{Serializer, SerializeStruct};
 
+/// Including sever's host and port
 #[derive(Debug)]
 pub struct Config {
     pub host: String,
@@ -26,7 +90,7 @@ impl Config {
     }
 }
 
-// Index
+/// Index structure
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Index {
     pub uid : String,
@@ -42,6 +106,7 @@ pub struct Index {
     pub primary_key: String,
 }
 
+/// Collection of Indexes
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Indexes {
     pub indexes: Vec<Index>
@@ -54,6 +119,7 @@ impl Indexes {
     }
 }
 
+/// Including create index's params
 #[derive(Deserialize, Debug)]
 pub struct CreateIndexRequest {
     pub uid: String,
@@ -89,6 +155,7 @@ impl Serialize for CreateIndexRequest {
     }
 }
 
+/// Including update index's params
 #[derive(Serialize, Deserialize, Debug)]
 pub struct UpdateIndexRequest {
     pub uid: String,
@@ -108,6 +175,7 @@ impl UpdateIndexRequest {
     }
 }
 
+/// Including delete index's params
 #[derive(Serialize, Deserialize, Debug)]
 pub struct DeleteIndexRequest {
     pub uid: String,
