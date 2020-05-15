@@ -28,8 +28,11 @@ async fn main() -> std::io::Result<()> {
     // default value Some(20)
     let limit = Some(2);
 
+    // attributesToRetrieve default value * show all fields
+    let attributes = "title";
+
     // You Need To Tell Engine what's the type of your data.
-    let res = Client::new(config).get_documents::<Movie>(uid, offset, limit).await;
+    let res = Client::new(config).get_documents::<Movie>(uid, offset, limit, None).await;
     match res {
         Ok(documents) => {
             println!("documents: {:?}", documents);
