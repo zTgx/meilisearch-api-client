@@ -60,6 +60,10 @@ impl Client {
         documents::get_document(&self.config, uid, did).await
     }
 
+    pub async fn get_documents<T: Document>(&self, uid: String, offset: Option<usize>, limit: Option<usize>) -> Result<Vec<T>, ServiceError> {
+        documents::get_documents(&self.config, uid, offset, limit).await
+    }
+
     pub async fn add_or_replace<T: Document>(&self, document_req: DocumentRequest<T>) -> Result<DocumentState, ServiceError> {
         documents::add_or_replace(&self.config, document_req).await
     }
