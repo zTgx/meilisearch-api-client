@@ -1,5 +1,4 @@
 # MEILIB
-# caveat!!! [WIP]
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE) [![crate](https://img.shields.io/crates/v/meilib.svg)](https://crates.io/crates/meilib)
 [![Build Status](https://travis-ci.org/zTgx/meilib.svg?branch=master)](https://travis-ci.org/zTgx/meilib)
 
@@ -11,6 +10,8 @@ More examples
 ---------------
 More examples can be found [in the examples directory](examples/).  
 
-## Changelog
+## Credits
+- [zTgx](https://github.com/zTgx) - Author
 
-Release notes are available in [CHANGELOG.md](CHANGELOG.md).
+## License
+[MIT](https://github.com/zTgx/meilib/blob/master/LICENSE)
