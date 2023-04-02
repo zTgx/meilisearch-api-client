@@ -1,7 +1,7 @@
-extern crate meilisearch_api_client;
 extern crate actix_web;
+extern crate meilisearch_api_client;
 
-use meilisearch_api_client::{Config, client::Client};
+use meilisearch_api_client::{client::Client, Config};
 
 #[actix_rt::main]
 async fn main() -> std::io::Result<()> {
@@ -10,11 +10,10 @@ async fn main() -> std::io::Result<()> {
     match res {
         Ok(indexes) => {
             println!("all indexes: {:?}", indexes);
-        },
+        }
         Err(err) => {
             println!("get_indexes' error: {:?}", err);
         }
     }
     Ok(())
 }
-

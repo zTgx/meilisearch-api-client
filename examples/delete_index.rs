@@ -1,7 +1,7 @@
-extern crate meilisearch_api_client;
 extern crate actix_web;
+extern crate meilisearch_api_client;
 
-use meilisearch_api_client::{Config, client::Client, DeleteIndexRequest};
+use meilisearch_api_client::{client::Client, Config, DeleteIndexRequest};
 
 #[actix_rt::main]
 async fn main() -> std::io::Result<()> {
@@ -12,11 +12,10 @@ async fn main() -> std::io::Result<()> {
     match res {
         Ok(result) => {
             println!("delete result: {:?}", result);
-        },
+        }
         Err(err) => {
             println!("err: {:?}", err);
         }
     }
     Ok(())
 }
-

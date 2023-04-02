@@ -1,8 +1,8 @@
-extern crate meilisearch_api_client;
 extern crate actix_web;
+extern crate meilisearch_api_client;
 
+use meilisearch_api_client::{client::Client, Config, Document, DocumentRequest};
 use serde::{Deserialize, Serialize};
-use meilisearch_api_client::{Config, client::Client, Document, DocumentRequest};
 
 #[actix_rt::main]
 async fn main() -> std::io::Result<()> {
@@ -20,21 +20,23 @@ async fn main() -> std::io::Result<()> {
         }
     }
 
-    let req_data = DocumentRequest { 
-                        uid, 
-                        documents: Some( vec![ Movie { id: "movie_id".to_string(), title: "movie_title".to_string() } ] ) 
-                    };
+    let req_data = DocumentRequest {
+        uid,
+        documents: Some(vec![Movie {
+            id: "movie_id".to_string(),
+            title: "movie_title".to_string(),
+        }]),
+    };
 
     let config = Config::new("http://127.0.0.1".to_string(), 7700);
     let res = Client::new(config).add_or_replace(req_data).await;
     match res {
         Ok(state) => {
             println!("documents state: {:?}", state);
-        },
+        }
         Err(err) => {
             println!("err: {:?}", err);
         }
     }
     Ok(())
 }
-

@@ -1,5 +1,5 @@
-use serde::{Deserialize, Serialize};
 use actix_web::http::StatusCode;
+use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ResponseBody<T> {
@@ -11,7 +11,7 @@ pub struct ResponseBody<T> {
 impl<T> ResponseBody<T> {
     pub fn new(code: u32, message: &str, data: T) -> ResponseBody<T> {
         ResponseBody {
-            code: code,
+            code,
             message: message.to_string(),
             data,
         }
@@ -32,8 +32,7 @@ impl ServiceError {
                 code: http_status.as_u16() as u32,
                 message,
                 data: String::new(),
-            }
+            },
         }
     }
 }
-

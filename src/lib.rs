@@ -14,7 +14,7 @@
 //! # Quick Start
 //!
 //! To get you started quickly, the easiest and highest-level way to create
-//! index is to use [`create_index`]; 
+//! index is to use [`create_index`];
 //!
 //! ```
 //! use meilisearch_api_client::{Config, client::Client, CreateIndexRequest};
@@ -51,17 +51,17 @@
 //! ```
 //!
 //! # Installation
-//! 
+//!
 //! This crate requires a MeiliSearch server to run. See [here](https://docs.meilisearch.com/guides/advanced_guides/installation.html#download-and-launch) to install and run MeiliSearch.  
 //! For the user guide and further documentation, can be found
 //! [here](https://docs.meilisearch.com/)
-//! 
+//!
 
-mod indexes;
 mod documents;
+mod indexes;
 
-mod rest_helper;
 mod constants;
+mod rest_helper;
 
 /// Module containing all the api interfaces
 pub mod client;
@@ -69,9 +69,9 @@ pub mod client;
 /// Module containing ServiceError
 pub mod error;
 
-use serde::{Deserialize, Serialize};
-use serde::ser::{Serializer, SerializeStruct};
 use serde::de::DeserializeOwned;
+use serde::ser::{SerializeStruct, Serializer};
+use serde::{Deserialize, Serialize};
 use std::fmt::Debug;
 use std::fmt::Display;
 
@@ -84,10 +84,7 @@ pub struct Config {
 
 impl Config {
     pub fn new(host: String, port: usize) -> Self {
-        Config {
-            host,
-            port
-        }
+        Config { host, port }
     }
 
     pub fn get_url(&self) -> String {
@@ -98,29 +95,27 @@ impl Config {
 /// Index structure
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Index {
-    pub uid : String,
+    pub uid: String,
     pub name: String,
 
-    #[serde(rename="createdAt")]
+    #[serde(rename = "createdAt")]
     pub created_at: String,
 
-    #[serde(rename="updatedAt")]
+    #[serde(rename = "updatedAt")]
     pub updated_at: String,
 
-    #[serde(rename="primaryKey")]
+    #[serde(rename = "primaryKey")]
     pub primary_key: String,
 }
 
 /// Collection of Indexes
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Indexes {
-    pub indexes: Vec<Index>
+    pub indexes: Vec<Index>,
 }
 impl Indexes {
     pub fn new(indexes: Vec<Index>) -> Self {
-        Indexes {
-            indexes
-        }
+        Indexes { indexes }
     }
 }
 
@@ -130,15 +125,15 @@ pub struct CreateIndexRequest {
     pub uid: String,
     pub name: String,
 
-    #[serde(rename="primaryKey")]
-    pub primary_key: Option<String>
+    #[serde(rename = "primaryKey")]
+    pub primary_key: Option<String>,
 }
 impl CreateIndexRequest {
     pub fn new(uid: String, name: String, primary_key: Option<String>) -> Self {
         CreateIndexRequest {
             uid,
             name,
-            primary_key
+            primary_key,
         }
     }
 }
@@ -152,9 +147,9 @@ impl Serialize for CreateIndexRequest {
         state.serialize_field("uid", &self.uid)?;
         state.serialize_field("name", &self.name)?;
 
-        if self.primary_key.is_some () {
+        if self.primary_key.is_some() {
             state.serialize_field("primaryKey", &self.primary_key)?;
-        } 
+        }
 
         state.end()
     }
@@ -166,7 +161,7 @@ pub struct UpdateIndexRequest {
     pub uid: String,
     pub name: String,
 
-    #[serde(rename="primaryKey")]
+    #[serde(rename = "primaryKey")]
     pub primary_key: String,
 }
 
@@ -175,7 +170,7 @@ impl UpdateIndexRequest {
         UpdateIndexRequest {
             uid,
             name,
-            primary_key
+            primary_key,
         }
     }
 }
@@ -188,9 +183,7 @@ pub struct DeleteIndexRequest {
 
 impl DeleteIndexRequest {
     pub fn new(uid: String) -> Self {
-        DeleteIndexRequest {
-            uid
-        }
+        DeleteIndexRequest { uid }
     }
 }
 
@@ -203,23 +196,19 @@ pub trait Document: Serialize + DeserializeOwned + std::fmt::Debug {
 
 /// Including add documents request params
 #[derive(Serialize, Debug)]
-pub struct DocumentRequest <T: Document> {
-    pub uid: String,                // index id
-    pub documents: Option<Vec<T>>,  // user defined data
+pub struct DocumentRequest<T: Document> {
+    pub uid: String,               // index id
+    pub documents: Option<Vec<T>>, // user defined data
 }
-impl <T: Document> DocumentRequest <T> {
+impl<T: Document> DocumentRequest<T> {
     pub fn new(uid: String, documents: Option<Vec<T>>) -> Self {
-        DocumentRequest {
-            uid,
-            documents
-        }
+        DocumentRequest { uid, documents }
     }
 }
 
 /// Including documents related response
 #[derive(Serialize, Deserialize, Debug)]
 pub struct DocumentState {
-    #[serde(rename="updateId")]
+    #[serde(rename = "updateId")]
     pub update_id: usize,
 }
-
