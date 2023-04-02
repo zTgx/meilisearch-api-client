@@ -1,8 +1,8 @@
-extern crate meilib;
+extern crate meilisearch_api_client;
 extern crate actix_web;
 
 use serde::{Deserialize, Serialize};
-use meilib::{Config, client::Client, Document, DocumentRequest};
+use meilisearch_api_client::{Config, client::Client, Document, DocumentRequest};
 
 #[actix_rt::main]
 async fn main() -> std::io::Result<()> {

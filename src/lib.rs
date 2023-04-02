@@ -17,7 +17,7 @@
 //! index is to use [`create_index`]; 
 //!
 //! ```
-//! use meilib::{Config, client::Client, CreateIndexRequest};
+//! use meilisearch_api_client::{Config, client::Client, CreateIndexRequest};
 //!
 //! #[actix_rt::main]
 //! async fn main() -> std::io::Result<()> {

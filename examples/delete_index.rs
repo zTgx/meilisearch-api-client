@@ -1,7 +1,7 @@
-extern crate meilib;
+extern crate meilisearch_api_client;
 extern crate actix_web;
 
-use meilib::{Config, client::Client, DeleteIndexRequest};
+use meilisearch_api_client::{Config, client::Client, DeleteIndexRequest};
 
 #[actix_rt::main]
 async fn main() -> std::io::Result<()> {
